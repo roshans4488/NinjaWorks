@@ -1,0 +1,35 @@
+	<div>
+			<div class="ngdialog-message">
+				<h3>Add Task</h3>
+			
+				<p class="mt">Add Task</p>
+			</div>
+			
+			<div class="ngdialog-buttons mt">
+			    
+			   
+			    <table style="width:100%">
+              <tr>   <td>Task Name</td>  <td><input  type="text" name="Task Name" ng-model="newTaskName"/></td>		
+              </tr>
+              <tr> <td>Actual Start Date</td>   <td><input  type="date" name="Actual Start Date" ng-model="actualStartDate"/></td>		
+              </tr>
+              <tr> <td>Actual Finish Date</td>    <td><input  type="date" name="Actual Finish Date" ng-model="actualFinishDate"/></td>	
+              </tr>
+              
+               <tr>  <td>Predecessor</td> <td>	<input  type="text" name="Predecessor" ng-model="predecessor" /></td>		
+              </tr>
+              
+               <tr> <td>Planned Start Date</td>   <td><input  type="date" name="Planned Start Date" ng-model="plannedStartDate"/></td>		
+              </tr>
+              <tr> <td>Planned Finish Date</td>    <td><input  type="date" name="Planned Finish Date" ng-model="plannedFinishDate"/></td>	
+              </tr>
+              
+               <tr>  <td>Percent Completed</td> <td>	<input  type="text" name="Percent Completed" ng-model="percentCompleted" /></td>		
+              </tr>
+            </table>
+			    
+			    
+			
+				<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="addNewTask()">Submit</button>
+			</div>
+		</div>

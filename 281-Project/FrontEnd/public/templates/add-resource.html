@@ -1,0 +1,26 @@
+	<div>
+			<div class="ngdialog-message">
+				<h3>Add Resource</h3>
+			
+				<p class="mt">Add Resource</p>
+			</div>
+			
+			<div class="ngdialog-buttons mt">
+			    
+			   
+			    <table style="width:100%">
+              <tr>   <td>Resource Name</td>  <td><input  type="text" name="Resource Name" ng-model="newResourceName"/></td>		
+              </tr>
+              <tr> <td>Email</td>   <td><input  type="email" name="Email" ng-model="email"/></td>		
+              </tr>
+              <tr> <td>Type</td>    <td><input  type="text" name="Type" ng-model="type"/></td>	
+              </tr>
+               <tr>  <td>Phone</td> <td>	<input  type="text" name="Phone" ng-model="phone" e-pattern="\d{3}\-\d{3}\-\d{4}" e-title="xxx-xxx-xxxx"/></td>		
+              </tr>
+            </table>
+			    
+			    
+			
+				<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="addResourceDetails()">Submit</button>
+			</div>
+		</div>

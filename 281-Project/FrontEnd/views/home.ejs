@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Final Project">
+    <meta name="author" content="CMPE281-Team20">
+
+    <title>Ninja Works</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../stylesheets/body-attributes.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/ninjastyles.css">
+    <!-- Custom Fonts -->
+    <link href="../stylesheets/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <!-- CSS for ngDialog -->
+    <link rel="stylesheet" href="../stylesheets/ngDialog.css">
+    <link rel="stylesheet" href="../stylesheets/ngDialog-theme-default.css">
+    <!--<link rel="stylesheet" href="../stylesheets/ngDialog-theme-flat.css">-->
+
+    <!-- Core Libraries: Bootstrap / JQuery / DataTables / Angular -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../javascript/bootstrap.min.js"></script>
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>-->
+    <script type="text/javascript" src="https://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <script type="text/javascript" src="../javascript/ninja.js"></script>
+
+    <script data-require="angular.js@1.4.0-beta.5" data-semver="1.4.0-beta.5" src="https://code.angularjs.org/1.4.0-beta.5/angular.js"></script>
+
+    <!-- Angualr bootstrap library -->
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.1.js"></script>
+
+    <!-- User home page Angular JS Controller -->
+    <script src="../javascript/user-home.js" type="text/javascript"></script>
+
+    <!--Angular X Editable  -->
+    <link href="../lib/xeditable.css" rel="stylesheet">
+    <script src="../lib/xeditable.min.js"></script>
+
+    <!-- ngDialog -->
+    <script src="../lib/ngDialog.min.js"></script>
+    <Script type="text/javascript">
+      $(document).ready(function() {
+        $('a:has(#backbutton)').css('padding','0');
+      });
+    </script>
+</head>
+
+<body id="page-top" class="index" ng-app="ninjaApp" ng-controller="userhome">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" style="background-color: #001; padding:5px 0;">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="">NinjaWorks</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href=""></a>
+                    </li>
+
+                    <li>
+                        <a class="page-scroll" style="color:#fed136">Welcome <%= FirstName %>, </a>
+                    </li>
+
+                    <li ng-show="showDivFlag==2">
+                        <a class="page-scroll" href="" ng-click="home()">Dashboard</a>
+                    </li>
+                    <li ng-show="showDivFlag=='waterfall'">
+                        <a class="page-scroll" href="" ng-click="home()">Dashboard</a>
+                    </li>
+                    <li ng-show="showDivFlag=='scrum'">
+                        <a class="page-scroll" href="" ng-click="home()">Dashboard</a>
+                    </li>
+                    <li ng-show="showDivFlag=='kanban'">
+                        <a class="page-scroll" href="" ng-click="home()">Dashboard</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/signout">SignOut</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <!-- home Section -->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag==1">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-4">
+
+                    <div align="left">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="createWorkspace()">
+                            Create Workspace
+                        </button>
+                    </div>
+                    <br>
+                    <h4> <img src="../images/my.png"  height="42" width="42"> My Workspaces</h4>
+                    <div ng-repeat="ws in workspaces|filter:{ workspace_permissions : 'admin'} | orderBy: 'workspace_name'" align="left">
+                        <a class="login" href="" ng-click="displayWorkspace(ws.workspace_id, ws.workspace_name,ws.workspace_type,ws.workspace_permissions,ws.workspace_Description)">
+                            <h4>{{ws.workspace_name}} </h4> </a>
+                    </div>
+                    <br>
+                    <br>
+                    <h4><img src="../images/shared_folder_icon.jpg"  height="28" width="33"> Shared Workspaces</h4>
+                    <div ng-repeat="ws in workspaces|filter:{ workspace_permissions : 'read_write'} | orderBy: 'workspace_name'">
+                        <a class="login" href="" ng-click="displayWorkspace(ws.workspace_id, ws.workspace_name,ws.workspace_type,ws.workspace_permissions,ws.workspace_Description)">
+                            <h4>{{ws.workspace_name}} </h4> </a>
+                    </div>
+                    <div ng-repeat="ws in workspaces|filter:{ workspace_permissions : 'read_only'} | orderBy: 'workspace_name'">
+                        <a class="login" href="" ng-click="displayWorkspace(ws.workspace_id, ws.workspace_name,ws.workspace_type,ws.workspace_permissions,ws.workspace_Description)">
+                            <h4>{{ws.workspace_name}} </h4> </a>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+
+                    <div ng-show="showWorkspaceFlag==0">
+                        <img src="../images/getstartednow.png" height="70" width="250">
+                        <ul>
+
+                            <li>Click on "Create Workspace" to create a new workspace</li>
+                            <li>Click on an existing workspace to proceed</li>
+                        </ul>
+                    </div>
+
+                    <!--Display workspace on click-->
+                    <div ng-show="showWorkspaceFlag==1">
+                        <div align="right">
+                          <button type="button" class="btn btn-default btn-lg">
+                            <span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"  ng-click="editWorkspace()"></span>
+                          </button>
+                          <button type="button" class="btn btn-default btn-lg">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true" ng-click="editWorkspace()"></span>
+                          </button>
+                          <button type="button" class="btn btn-default btn-lg">
+                            <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"  ng-click="shareWorkspace()"></span>
+                          </button>
+                        </div>
+
+
+                        <table>
+                            <h4>Workspace Details</h4>
+                            <tr>
+                                <td>
+                                    <h5>ID</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{workspace_id}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Name</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{workspace_name}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Type</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{workspace_type}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Access</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{workspace_permissions}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Description</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{workspace_description}}</td>
+                            </tr>
+
+                        </table>
+                        <div align="right">
+                            <input type="image" src="../images/next_new.png" height="80" width="85" ng-click="viewWorkspace()" />
+                            <br>
+                            <a> &nbsp;&nbsp;Go to Workspace</a>
+                        </div>
+
+                    </div>
+
+                    <!-- Create workspace form -->
+                    <div ng-show="showWorkspaceFlag==2">
+                        <h4 class="section-heading">Create Workspace</h4>
+                        <div class="team-member">
+                            <p class="error-message-display" ng-show="createWorkspaceErrorMessage">{{createWorkspaceErrorMessage}}</p>
+                            <form name="sentMessage" id="contactForm">
+
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Workspace ID *" ng-model="newWorkspaceID" readonly>
+                                    <p class="help-block text-danger"></p>
+                                    <input type="text" class="form-control" placeholder="Workspace Name *" ng-model="newWorkspaceName" required data-validation-required-message="Please enter your Last Name.">
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Workspace Description *" ng-model="newWorkspaceDescription" required data-validation-required-message="Please enter your email address.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div>
+                                    <select ng-model="modelSelected" class="model-selection">
+                                        <option value="">Choose a model for development tracking *</option>
+                                        <option value="waterfall">Waterfall Model</option>
+                                        <option value="scrum">Scrum Model</option>
+                                        <option value="kanban">Kanban Model</option>
+
+                                    </select>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <button type="submit" class="btn btn-warning dropdown-toggle" ng-click="createWorkspace()">Create</button>
+                                <button type="submit" class="btn btn-default dropdown-toggle" ng-click="cancelCreateWorkspace()">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End create workspace form -->
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </section>
+
+
+    <!-- View all Projects of a workspace -->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag==2">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-sm-3">
+
+                    <div align="left">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false" ng-click="createProject()">
+                            Create Project
+                        </button>
+                    </div>
+                    <br>
+                    <h4>Projects</h4>
+
+                    <div ng-repeat="project in projectDetails.data"><a href="" ng-click="displayProject(project)"><h5>{{project.PROJECT_NAME}}</h5></a>
+                        <br>
+                    </div>
+
+                </div>
+                <div class="col-sm-8">
+                    <div ng-show="showProjectFlag == 0"> Click on a project to view details</div>
+                    <div ng-show="showProjectFlag == 1">
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <h5>Project Type</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp; {{workspace_type}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>ID</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp; {{projectID}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Name</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{projectName}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Description</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{projectDescription}}</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h5>Comment</h5>
+                                </td>
+                                <td class="workspace-heading">&nbsp;{{projectComment}}</td>
+                            </tr>
+
+
+                        </table>
+                        <div align="right">
+                            <input type="image" src="../images/next_new.png" height="80" width="85" ng-click="viewProject()" />
+                            <br>
+                            <a> &nbsp;&nbsp;Go to Project</a>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Display create project section -->
+                    <div ng-show="showProjectFlag==2">
+                        <h4 class="section-heading">Create Project</h4>
+                        <div class="team-member">
+                            <p class="error-message-display" ng-show="createProjectErrorMessage">{{createProjectErrorMessage}}</p>
+                            <form name="sentMessage" id="contactForm" validate>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Project ID *" ng-model="newProjectID" readonly>
+                                    <p class="help-block text-danger"></p>
+                                    <input type="text" class="form-control" placeholder="Project Name *" ng-model="newProjectName" required data-validation-required-message="Please enter your Last Name.">
+
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Project Description *" ng-model="newProjectDescription" required data-validation-required-message="Please enter your email address.">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+
+                                <button type="submit" class="btn btn-warning dropdown-toggle" ng-click="createProject()">Create</button>
+                                <button type="submit" class="btn btn-default dropdown-toggle" ng-click="cancelCreateProject()">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!--End create project form -->
+            </div>
+
+    </section>
+
+
+    <!-- Waterfall Project Section -->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag=='waterfall'">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-sm-9">
+                    <a>
+                        <h5>{{projectName}}</h5>
+                    </a>
+                    <tabset>
+                        <tab active="1">
+                            <tab-heading>
+                                <img src="../images/task.png" alt="Tasks" height="30" width="50">Tasks
+                            </tab-heading>
+                            <div align="right">
+                                <br>
+                                <input type="image" src="../images/add-task.png" height="35" width="35" ng-click="addTask()" />
+                            </div>
+                            <div id="wrapper" ng-show="TasksDetails.length > 0">
+                                <table id="fixed">
+
+                                    <thead>
+                                        <th ng-repeat="task in taskMetadata" ng-init="key[$index]=task.field_name">{{task.field_name}}</th>
+
+                                    </thead>
+
+                                    <tbody>
+                                        <tr ng-repeat="task in TasksDetails">
+                                            <td><a>{{task.TASK_ID}}</a>
+                                            </td>
+                                            <td><a href="#" editable-textarea="task.TASK_NAME" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'TASK_NAME',$data)">{{ task.TASK_NAME || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-date="task.ACTUAL_START_DATE" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'ACTUAL_START_DATE',$data)">{{ (task.ACTUAL_START_DATE |date:"MMMM dd,yyyy") || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-date="task.ACTUAL_FINISH_DATE" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'ACTUAL_FINISH_DATE',$data)">{{ (task.ACTUAL_FINISH_DATE |date:"MMMM dd,yyyy")  || "empty" }}</a>
+                                            </td>
+                                            <td><a>{{ task.ACTUAL_DURATION  || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-text="task.PREDECESSOR" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'PREDECESSOR',$data)">{{ task.PREDECESSOR  || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-date="task.PLANNED_START_DATE" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'PLANNED_START_DATE',$data)">{{ (task.PLANNED_START_DATE |date:"MMMM dd,yyyy")  || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-date="task.PLANNED_FINISH_DATE" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'PLANNED_FINISH_DATE',$data)">{{ (task.PLANNED_FINISH_DATE |date:"MMMM dd,yyyy")  || "empty" }}</a>
+                                            </td>
+                                            <td><a>{{task.PLANNED_DURATION || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-number="task.PRCNT_COMPLETE" onbeforesave="updateField('tasks','TASK_ID',task.TASK_ID,null,null,'PRCNT_COMPLETE',$data)" e-min=0 e-max=100>{{ task.PRCNT_COMPLETE || "empty" }}</a>
+                                            </td>
+                                            <td>
+                                                <a href="#">{{task.DESCRIPTION}}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading>
+                                <img src="../images/resource.png" alt="Resources" height="30" width="40">Resources
+                            </tab-heading>
+                            <div align="right">
+                                <input type="image" src="../images/add-resource.png" height="40" width="40" ng-click="addResource()" />
+
+
+                            </div>
+                            <div id="wrapper" ng-show="resources.length > 0">
+                                <table id="fluid">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>TYPE</th>
+                                        <th>PHONE</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="resource in resources">
+                                            <td><a>{{resource.RESOURCE_ID}}</a>
+                                            </td>
+                                            <td><a href="#" editable-text="resource.RESOURCE_NAME" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'RESOURCE_NAME',$data)">{{ resource.RESOURCE_NAME || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-email="resource.EMAIL" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'EMAIL',$data)">{{ resource.EMAIL || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-text="resource.TYPE" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'TYPE',$data)">{{ resource.TYPE || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-tel="resource.PHONE" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'PHONE',$data)" e-pattern="\d{3}\-\d{3}\-\d{4}" e-title="xxx-xxx-xxxx">{{ resource.PHONE || "empty" }}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </tab>
+                        <!--Begin comments tab -->
+                        <tab>
+                            <tab-heading>
+                                <img src="../images/comment.png" alt="Comments" height="30" width="30"> Comments
+                            </tab-heading>
+                            <br>
+
+
+                            <select ng-options="task as task.TASK_NAME for task in TasksDetails" ng-model="taskSelected" class="model-selection">
+                                <option value="">** Select a task to view/add comments **</option>
+                            </select>
+                            <br>
+                            <div align="right" ng-show="taskSelected">
+                                <input type="image" src="../images/addcomment.png" height="50" width="50" ng-click="addComment()" />
+                            </div>
+
+                            <div ng-repeat="comment in taskSelected.COMMENTS  | orderBy : '-DATE'">
+                                <br>
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">ID: {{comment.COMMENT_ID}}</div>
+                                    <div class="panel-body"> {{comment.COMMENT_DESCRIPTION}}</div>
+                                    <div class="panel-footer" align="right">Submitted on {{comment.DATE}}</div>
+                                </div>
+                            </div>
+                        </tab>
+                        <!--Begin comments tab -->
+                        <tab ng-click="waterfallStatus()">
+                            <tab-heading>
+                                <img src="../images/waterfall-stat.png" alt="Comments" height="30" width="30"> Status
+                            </tab-heading>
+
+                            <div ng-show="TasksDetails.length > 0">
+                                <br>
+                                <br>
+                                <div id="waterfallgraph" style="min-width: 300px; width:400px; height: 400px; margin: 0 auto"></div>
+                                <br>
+                                <!-- <div google-chart chart="statusWaterfall" style=""></div> -->
+                            </div>
+                            <div ng-show="TasksDetails.length == 0">
+                                <br>
+                                <br>
+                                <h5>No status available for this project.</h5>
+                                <br>
+                            </div>
+                        </tab>
+                        <!-- tab for help menu -->
+                        <tab>
+                            <tab-heading>
+                                <img src="../images/help-waterfall.png" alt="Help" height="30" width="35">Help
+                            </tab-heading>
+                        </tab>
+                        <tab>
+                          <tab-heading style="margin:0;padding:0;">
+                            <span id="backbutton" style="margin-left:50px;"><input width="45" type="image" height="40" src="../images/back.png" ng-click="viewWorkspace()"></span>
+                          </tab-heading>
+                        </tab>
+                    </tabset>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- Scrum Project Section -->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag=='scrum'" style="padding: 90px 0;">
+        <div class="container">
+
+            <div class="row">
+                <div role="tabpanel">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs scrumtabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#scrumbacklog" aria-controls="scrumbacklog" role="tab" data-toggle="tab">Backlog</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumsprintoverview" aria-controls="scrumsprintoverview" role="tab" data-toggle="tab">Sprints</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumsprint" aria-controls="scrumsprint" role="tab" data-toggle="tab">Sprint Stories</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumresources" aria-controls="scrumresources" role="tab" data-toggle="tab">Resources</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumburndown" aria-controls="scrumburdown" role="tab" data-toggle="tab">Burndown</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumstatus" aria-controls="scrumstatus" role="tab" data-toggle="tab">Status</a>
+                        </li>
+                        <li role="presentation"><a href="#scrumhelp" aria-controls="scrumhelp" role="tab" data-toggle="tab">Help</a>
+                        </li>
+                        <span style="margin-left:50px;"><input width="45" type="image" height="40" src="../images/back.png" ng-click="viewWorkspace()"></span>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="scrumbacklog">
+                            <div id="scrumtablecontrols" style="margin-top:40px;">
+
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="scrumsprintoverview">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="scrumsprint">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="scrumresources">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="scrumburndown">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="scrumstatus">
+                        </div>
+
+                        <div role="tabpanel" class="tab-pane" id="scrumhelp">
+                            <h2 style="margin-top:40px;">What is Scrum?</h2>
+                            <p>Scrum is an iterative and incremental agile software development methodology for managing product development. It is most commonly used in software development and is suited for projects with rapidly changing or highly emergent requirements.</p>
+                            <h2>Who uses Scrum?</h2>
+                            <p><img src="/images/whousesscrum.png" /></p>
+                            <h2>Ninja Labs</h2>
+                            <p>We at NinjaLabs enable you to get started using agile methodologies such as Scrum and Kanban by providing a platform that supports your specific requirements!</p>
+                            <h2>Learn more about Scrum</h2>
+                            <ul>
+                                <li><a href="https://www.scrumalliance.org/" target="_blank">The Scrum Alliance</a></li>
+                                <br />
+                                <li><a href="https://www.scrum.org/" target="_blank">Scrum.ORG</a></li>
+                                <br />
+                                <li><a href="http://www.mountaingoatsoftware.com/agile/scrum" target="_blank">Mountain Goat Software</a></li>
+                                <br />
+                                <li><a href="http://en.wikipedia.org/wiki/Scrum_(software_development)" target="_blank">Scrum on Wikipedia</a></li>
+                                <br />
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Kanban Project Section -->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag=='kanban'">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-sm-11">
+                    <tabset>
+                        <tab heading="BOARD">
+
+                            <div class="row" style="display: table;">
+                                <div class="col-sm-4" ng-repeat="lane in LaneDetails.data" style="border-left:1px solid grey; border-right:1px solid grey;margin:0;padding:10px;margin-top: 10px;font-family: Verdana; display: table-cell;">
+
+                                    <h5 style="text-align:center;">{{lane.LANE_NAME}}</h5>
+
+                                    <div ng-repeat="card in CardDetails.data">
+
+
+                                        <div ng-show="lane.LANE_ID == card.LANE_ID && lane.PROJECT_ID == card.PROJECT_ID" style="border:1px solid black; width: 310px; margin: 10px; padding:5px;">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            ID: {{card.CARD_ID}}
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            NAME: <a href="#" editable-text="card.CARD_NAME" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'CARD_NAME',$data)">{{ card.CARD_NAME || "empty" }}</a>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            DESCRIPTION: <a href="#" editable-text="card.CARD_DESCRIPTION" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'CARD_DESCRIPTION',$data)">{{ card.CARD_DESCRIPTION || "empty" }}</a>
+
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            PRIORITY: <a href="#" editable-number="card.PRIORITY" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'PRIORITY',$data)">{{ card.PRIORITY || "empty" }}</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            ESTIMATE: <a href="#" editable-number="card.ESTIMATE" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'ESTIMATE',$data)">{{ card.ESTIMATE || "empty" }}</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            IsBlocker?: <a href="#" editable-text="card.IS_BLOCKER" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'IS_BLOCKER',$data)">{{ card.IS_BLOCKER || "empty" }}</a>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>
+                                                            LaneId: <a href="#" editable-text="card.LANE_ID" onbeforesave="updateField('cards','CARD_ID',card.CARD_ID,null,null,'LANE_ID',$data)">{{ card.LANE_ID || "empty" }}</a>
+                                                        </td>
+                                                    </tr>
+
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+
+                        </tab>
+                        <tab heading="RESOURCES">
+
+                            <div align="right">
+                                <input type="image" src="../images/add-resource.png" height="40" width="40" ng-click="addResource()" />
+                             
+                            </div>
+                            <div id="wrapper" ng-show="resources.length > 0">
+                                <table id="fluid">
+                                    <thead>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>EMAIL</th>
+                                        <th>TYPE</th>
+                                        <th>PHONE</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="resource in resources">
+                                            <td><a>{{resource.RESOURCE_ID}}</a>
+                                            </td>
+                                            <td><a href="#" editable-text="resource.RESOURCE_NAME" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'RESOURCE_NAME',$data)">{{ resource.RESOURCE_NAME || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-email="resource.EMAIL" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'EMAIL',$data)">{{ resource.EMAIL || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-text="resource.TYPE" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'TYPE',$data)">{{ resource.TYPE || "empty" }}</a>
+                                            </td>
+                                            <td><a href="#" editable-tel="resource.PHONE" onbeforesave="updateField('resources','PROJECT_ID',projectID,'RESOURCE_ID',resource.RESOURCE_ID,'PHONE',$data)" e-pattern="\d{3}\-\d{3}\-\d{4}" e-title="xxx-xxx-xxxx">{{ resource.PHONE || "empty" }}</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </tab>
+
+                        <tab heading="STATUS">
+                            <div id="kanbangraph" style="min-width: 300px; width:400px; height: 400px; margin: 0 auto">
+                              
+                              
+                               
+                                 <div class="row" style="display: table;">
+                                <div class="col-sm-8" >
+                              <table class="table table-striped">
+                                
+                                <thead>
+                                  <th></th>
+                               <th> <h5 style="text-align:center;">Upper Limit</h5></th>
+                               <th> <h5 style="text-align:center;">Lower Limit</h5></th>
+                               <th> <h5 style="text-align:center;">Current Count</h5></th>
+                                
+                                </thead>
+                                 <tbody>
+                      
+                               
+                               
+                         
+                               <tr style="text-align:center;" ng-repeat="lane in LaneDetails.data">
+                               <td>{{lane.LANE_NAME}}</td> <td>{{lane.UPPER_LIMIT}}</td> <td>{{lane.LOWER_LIMIT}}</td>
+                               
+                               
+                               <td> {{lane.CURRENT_COUNT}} </td></tr>
+                               
+                               
+                        
+                           
+                               
+                                   </tbody>
+                               </table>
+                               </div>
+                               </div>
+                              
+                               
+                               
+                            </div>
+                        </tab>
+                        <tab>
+                          <tab-heading style="margin:0;padding:0;">
+                            <span id="backbutton" style="margin-left:50px;"><input width="45" type="image" height="40" src="../images/back.png" ng-click="viewWorkspace()"></span>
+                          </tab-heading>
+                        </tab>
+                    </tabset>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <!-- Dummy section - hidden reusable section code - delete later-->
+    <section id="portfolio" class="bg-light-gray" ng-show="showDivFlag==7">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-sm-2"></div>
+
+                <div class="col-sm-4"></div>
+
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <footer>
+        <div class="container">
+            <hr>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <span class="copyright">Copyright &copy; NinjaWorks 2015</span>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li><a href="#">Privacy Policy</a>
+                        </li>
+                        <li><a href="#">Terms of Use</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    </div>
+
+</body>
+
+</html>
