@@ -11,10 +11,10 @@ var logger = require('./logger');
  */
 function getConnection() {
     var connection = mysql.createConnection({
-        host: 'insatiable-mario-c9-1355603',
-        user: 'insatiable',
-        password: '',
-        database: 'ninjalabsmysql'
+        host: /*hostname*/,
+        user: /*username*/,
+        password: /*password*/,
+        database: /*database*/
     });
     return connection;
 }
