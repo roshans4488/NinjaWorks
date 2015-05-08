@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var logger = require('./logger');
 
 /* Connecting to Mongo DB */
-var connection=mongoose.connect('mongodb://ninjalabsadmin:ninjalabsadmin@ds061701.mongolab.com:61701/ninjalabsmongo');
+var connection=mongoose.connect(/*connectionUrl*/);
 
 /* Connection Listeners */
 var db = mongoose.connection;
